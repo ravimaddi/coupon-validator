@@ -1,7 +1,7 @@
 {
-  "name": "express-babel-setup-template",
+  "name": "Coupon Validator",
   "version": "1.0.0",
-  "description": "Express-Babel-Setup - A simple express startoff template setup with babel, eslint, sequelize",
+  "description": "A simple coupon validator",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist && mkdir dist",
@@ -21,9 +21,9 @@
   "author": "Edafe Oghenefego",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fegoworks/express-babel-setup-template/issues"
+    "url": "https://github.com/fegoworks/coupon-validator/issues"
   },
-  "homepage": "https://github.com/fegoworks/express-babel-setup-template#readme",
+  "homepage": "https://github.com/fegoworks/coupon-validator#readme",
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
