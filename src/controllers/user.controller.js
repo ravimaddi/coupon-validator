@@ -119,8 +119,12 @@ class UserController {
           email: isUser.email,
         },
       });
-    } catch (error) {
-      return handleErrorResponse(res, error.message, 500);
+    } catch (e) {
+      if (e.name.startsWith('Sequelize') && e.errors.length) {
+        const error = e.errors.shift();
+        return handleErrorResponse(res, error.message, 400);
+      }
+      return handleErrorResponse(res, e.message, 500);
     }
   }
 }

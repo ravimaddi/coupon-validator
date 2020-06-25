@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import env from 'dotenv';
 import userRoute from './routes/user.route';
+import couponRoute from './routes/coupon.route';
 
 env.config();
 const port = process.env.PORT || 3000;
@@ -37,7 +38,8 @@ app.use(
 app.use(cookieParser());
 
 // Routes here
-app.use('users', userRoute);
+app.use('/api/v1/', userRoute);
+app.use('/api/v1/', couponRoute);
 
 app.get('/', (req, res) => {
   res.send(`<h1>Welcome to the Coupon Application</h1>
