@@ -32,6 +32,11 @@ export const generateToken = (
 );
 
 /**
+ * @param {string} token
+ * @return {object} decodeToken
+ */
+export const decodeToken = (token) => jwt.verify(token, process.env.SECRET);
+/**
  * @param {Object} res
  * @param {Object} data
  * @param {integer} statusCode

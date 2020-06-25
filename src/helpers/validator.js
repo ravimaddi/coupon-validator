@@ -49,6 +49,34 @@ const validator = {
         .required()
         .error(new Error('Password is required')),
     }),
+    generateCouponSchema: Joi.object().keys({
+      minimumAmount: Joi.number()
+        .required()
+        .error(new Error('Please input minimum cart amount')),
+      maximumAmount: Joi.number()
+        .required()
+        .error(new Error('Please input a maximum cart amount')),
+      discountType: Joi.string()
+        .required()
+        .trim()
+        .lowercase()
+        .valid('flat', 'percent')
+        .error(new Error('Value must either be flat or percent')),
+      discount: Joi.number()
+        .required()
+        .error(new Error('Please specify discount amount or percent')),
+      expiryDate: Joi.date()
+        .required()
+        .error(new Error('Please input a valid expiry date'))
+    }),
+    validateCouponSchema: Joi.object().keys({
+      coupon: Joi.string()
+        .required()
+        .error(new Error('Please enter coupon code')),
+      cartPrice: Joi.number()
+        .required()
+        .error(new Error('Enter cart price'))
+    })
   },
 };
 
