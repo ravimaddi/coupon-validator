@@ -1,27 +1,57 @@
-'use strict';
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Coupons', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Coupons', {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: Sequelize.UUID,
+      unique: true,
+    },
+    userId: {
+      type: Sequelize.UUID,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Users',
+        key: 'id',
+        as: 'userId',
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Coupons');
-  }
+    },
+    coupon: {
+      type: Sequelize.STRING,
+      required: true,
+    },
+    couponToken: {
+      type: Sequelize.STRING,
+      required: true,
+    },
+    minimumAmount: {
+      type: Sequelize.DECIMAL(10, 5),
+      required: true
+    },
+    maximumAmount: {
+      type: Sequelize.DECIMAL(10, 5),
+      required: true
+    },
+    discountType: {
+      type: Sequelize.STRING,
+      required: true
+    },
+    discount: {
+      type: Sequelize.DECIMAL(10, 5),
+      required: true
+    },
+    expiryDate: {
+      type: Sequelize.DATE,
+      required: true,
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE
+    }
+  }),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Coupons')
 };

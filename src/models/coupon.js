@@ -19,7 +19,11 @@ module.exports = (Sequelize, DataTypes) => {
       required: true,
     },
     minimumAmount: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.DECIMAL(10, 5),
+      required: true
+    },
+    maximumAmount: {
+      type: DataTypes.DECIMAL(10, 5),
       required: true
     },
     discountType: {
@@ -27,7 +31,7 @@ module.exports = (Sequelize, DataTypes) => {
       required: true
     },
     discount: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.DECIMAL(10, 5),
       required: true
     },
     expiryDate: {
