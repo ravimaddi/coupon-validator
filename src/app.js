@@ -44,7 +44,7 @@ app.use('/api/v1/', couponRoute);
 app.get('/', (req, res) => {
   res.send(`<h1>Welcome to the Coupon Application</h1>
   <h4>Please use PostMan and navigate to <code>/api/v1</code> to use the app</h4>
-  <p>For any more info please visit my <a href=''>Github</a> page</P>
+  <p>For any more info please visit my <a href='https://github.com/fegoworks/coupon-validator'>Github</a> page</P>
   <h4>Thanks  &#x1F600;</h4>`);
 });
 
