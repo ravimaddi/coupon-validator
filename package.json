@@ -13,7 +13,7 @@
     "undo:migrate": "sequelize db:migrate:undo:all",
     "seed": "sequelize db:seed:all",
     "pretest": "npm run undo:migrate && npm run migrate",
-    "test": "nyc mocha --timeout=50000 --require @babel/register ./src/test/ --exit || true",
+    "test": "set NODE_ENV='test' && nyc mocha --timeout=50000 --require @babel/register ./src/test/ --exit || true",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
