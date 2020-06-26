@@ -15,10 +15,6 @@ router.post('/coupons/validate',
   validate.validateBody(validate.schemas.validateCouponSchema),
   CouponController.validateCoupon);
 
-router.get('/coupons',
-  verifyToken.verify,
-  CouponController.getCoupons);
-
 router.get('/coupons/flat',
   verifyToken.verify,
   CouponController.getCouponsByType);
@@ -26,5 +22,9 @@ router.get('/coupons/flat',
 router.get('/coupons/percent',
   verifyToken.verify,
   CouponController.getCouponsByType);
+
+router.get('/coupons',
+  verifyToken.verify,
+  CouponController.getCoupons);
 
 export default router;

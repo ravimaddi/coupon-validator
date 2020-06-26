@@ -166,7 +166,9 @@ class CouponController {
       if (req.path.includes('flat')) {
         discountType = 'flat';
       }
-      discountType = 'percent';
+      if (req.path.includes('percent')) {
+        discountType = 'percent';
+      }
       const coupons = await Coupon.findAll({
         where: {
           discountType
