@@ -4,7 +4,9 @@
  * @format
  */
 
-import { Coupon } from '../models';
+import {
+  Coupon
+} from '../models';
 import {
   decodeToken,
   generateToken,
@@ -43,13 +45,11 @@ class CouponController {
       const userId = req.id;
       const timeDiff = getTimeDiff(expiryDate);
       const coupon = generateString();
-      const couponToken = generateToken(
-        {
+      const couponToken = generateToken({
           coupon,
         },
         `${timeDiff}m`,
-        process.env.SECRET
-      );
+        process.env.SECRET);
 
       const newCoupon = await Coupon.create({
         userId,
@@ -82,7 +82,10 @@ class CouponController {
   static async validateCoupon(req, res) {
     try {
       let amount = 0;
-      const { coupon, cartPrice } = req.body;
+      const {
+        coupon,
+        cartPrice
+      } = req.body;
 
       const found = await Coupon.findOne({
         where: {
@@ -116,8 +119,7 @@ class CouponController {
           amount = discountCalculator.percent(found.discount, cartPrice);
         }
         return handleSuccessResponse(
-          res,
-          {
+          res, {
             status: 'coupon code is valid',
             discountAmount: cartPrice - amount,
             newCartPrice: amount,
@@ -129,6 +131,49 @@ class CouponController {
       if (error.message === 'jwt expired') {
         return handleErrorResponse(res, 'Coupon code is no longer valid', 401);
       }
+      return handleErrorResponse(res, error.message, 500);
+    }
+  }
+
+  /**
+   * @description Get all Coupons
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} Coupons
+   * @member CouponController
+   */
+  static async getCoupons(req, res) {
+    try {
+      const coupons = await Coupon.findAll();
+      return handleSuccessResponse(res, coupons);
+    } catch (error) {
+      return handleErrorResponse(res, error.message, 500);
+    }
+  }
+
+  /**
+   * @description Get By Type
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} Coupons
+   * @member CouponController
+   */
+  static async getCouponsByType(req, res) {
+    try {
+      let discountType;
+      if (req.path.includes('flat')) {
+        discountType = 'flat';
+      }
+      discountType = 'percent';
+      const coupons = await Coupon.findAll({
+        where: {
+          discountType
+        }
+      });
+      return handleSuccessResponse(res, coupons);
+    } catch (error) {
       return handleErrorResponse(res, error.message, 500);
     }
   }
