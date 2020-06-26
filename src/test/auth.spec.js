@@ -1,15 +1,11 @@
+/** @format */
+
 import supertest from 'supertest';
 import chai from 'chai';
-import {
-  describe,
-  it
-} from 'mocha';
+import { describe, it } from 'mocha';
 import app from '../app';
 
-
-const {
-  expect
-} = chai;
+const { expect } = chai;
 const server = supertest(app);
 
 describe('create new account', () => {
@@ -20,9 +16,7 @@ describe('create new account', () => {
       email: 'feggie@mail.com',
       password: 'pass',
     };
-    const response = await server
-      .post('/api/v1/auth/create-user')
-      .send(user);
+    const response = await server.post('/api/v1/auth/create-user').send(user);
     expect(response.status).to.equal(201);
     expect(response.body.data).to.be.an('object');
   });
@@ -34,11 +28,9 @@ describe('create new account', () => {
       firstName: 'George',
       lastName: 'Masoon',
       email: 'feggie@mail.com',
-      password: 'pass'
+      password: 'pass',
     };
-    const response = await server
-      .post('/api/v1/auth/create-user')
-      .send(user);
+    const response = await server.post('/api/v1/auth/create-user').send(user);
     expect(response.status).to.equal(409);
     expect(response.body.error).to.equal(
       'An account with this email already exists'
