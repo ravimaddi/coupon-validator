@@ -4,9 +4,7 @@
  * @format
  */
 
-import {
-  Coupon
-} from '../models';
+import { Coupon } from '../models';
 import {
   decodeToken,
   generateToken,
@@ -16,7 +14,7 @@ import {
 import {
   getTimeDiff,
   generateString,
-  discountCalculator
+  discountCalculator,
 } from '../helpers/coupon';
 
 /**
@@ -45,9 +43,13 @@ class CouponController {
       const userId = req.id;
       const timeDiff = getTimeDiff(expiryDate);
       const coupon = generateString();
-      const couponToken = generateToken({
-        coupon
-      }, `${timeDiff}m`, process.env.SECRET);
+      const couponToken = generateToken(
+        {
+          coupon,
+        },
+        `${timeDiff}m`,
+        process.env.SECRET
+      );
 
       const newCoupon = await Coupon.create({
         userId,
@@ -80,18 +82,15 @@ class CouponController {
   static async validateCoupon(req, res) {
     try {
       let amount = 0;
-      const {
-        coupon,
-        cartPrice
-      } = req.body;
+      const { coupon, cartPrice } = req.body;
 
       const found = await Coupon.findOne({
         where: {
-          coupon
-        }
+          coupon,
+        },
       });
 
-      if (found.length === 0) {
+      if (found === null || found.length === 0) {
         return handleErrorResponse(res, 'Coupon does not exist', 404);
       }
       const decoded = decodeToken(found.couponToken);
@@ -99,20 +98,32 @@ class CouponController {
       if (decoded) {
         if (found.discountType === 'flat') {
           if (cartPrice < found.minimumAmount) {
-            return handleErrorResponse(res, "Cart price is lower than coupon's limit", 403);
+            return handleErrorResponse(
+              res,
+              "Cart price is lower than coupon's limit",
+              403
+            );
           }
           amount = discountCalculator.flat(found.discount, cartPrice);
         } else {
           if (cartPrice > found.maximumAmount) {
-            return handleErrorResponse(res, "Cart price exceeds coupon's limit ", 403);
+            return handleErrorResponse(
+              res,
+              "Cart price exceeds coupon's limit ",
+              403
+            );
           }
           amount = discountCalculator.percent(found.discount, cartPrice);
         }
-        return handleSuccessResponse(res, {
-          status: 'coupon code is valid',
-          discountAmount: cartPrice - amount,
-          newCartPrice: amount
-        }, 200);
+        return handleSuccessResponse(
+          res,
+          {
+            status: 'coupon code is valid',
+            discountAmount: cartPrice - amount,
+            newCartPrice: amount,
+          },
+          200
+        );
       }
     } catch (error) {
       if (error.message === 'jwt expired') {
